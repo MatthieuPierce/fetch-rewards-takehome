@@ -1,0 +1,8 @@
+form {
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  width: clamp(300px, 600px, 100vw);
+}
