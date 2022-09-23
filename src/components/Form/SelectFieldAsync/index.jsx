@@ -1,17 +1,12 @@
-import { useState } from "react";
+import OptionsList from "./OptionsList";
 
 export default function SelectFieldAsync({
   register,
-  name,
-  labelText = null,
-  inputType = "text",
+  field: { name, labelText = null, inputType = "select", validations = {} },
   formErrors,
-  validations = {},
   asyncOptions = null,
   ...rest
 }) {
-  const [options, setOptions] = useState();
-  // render label and select form asap, fill in options once loaded
   return (
     <div>
       <label htmlFor={name}>{labelText ? labelText : name}</label>
@@ -27,18 +22,11 @@ export default function SelectFieldAsync({
             : `--Please choose your ${name}--`}
         </option>
         {!asyncOptions && (
-          <>
-            <option>Option A</option>
-            <option>Option B</option>
-            <option>Option C</option>
-          </>
+          <OptionsList options={["A", "B", "C"]} selectName={name} />
         )}
-        {asyncOptions &&
-          asyncOptions.map((o) => (
-            <>
-              <option value={o?.name}>{o?.abbreviation}</option>
-            </>
-          ))}
+        {asyncOptions && (
+          <OptionsList options={asyncOptions} selectName={name} />
+        )}
       </select>
       <div>
         {formErrors[name] ? <span>{formErrors[name]?.message}</span> : null}

@@ -1,6 +1,14 @@
-export default function getSelectOptions() {
-  // Occupation and State should allow users to select from options returned by an endpoint.
+import axios from "axios";
+
+export default async function getSelectOptions() {
   const endpoint = import.meta.env.VITE_FETCH_ENDPOINT;
-  // fetch
-  // return {"occupations": ["str1", ...], "states": [{"name": "str1", "abbreviation": "str2"}, ...]
+  const options = {
+    withCredentials: false,
+  };
+  try {
+    const { data } = await axios.get(endpoint, options);
+    return data;
+  } catch (error) {
+    return { error: error };
+  }
 }

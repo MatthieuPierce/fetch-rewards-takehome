@@ -1,10 +1,7 @@
 export default function InputField({
   register,
-  name,
-  labelText = null,
-  inputType = "text",
+  field: { name, labelText = null, inputType = "text", validations = {} },
   formErrors,
-  validations = {},
   ...rest
 }) {
   return (

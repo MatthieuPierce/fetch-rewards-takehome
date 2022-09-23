@@ -1,13 +1,17 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./Form.css";
 import InputField from "./InputField";
 import SelectFieldAsync from "./SelectFieldAsync";
-
-import { emailRegExp } from "../../utilities/regexps";
 import handleSubmitUser from "../../utilities/handleSubmitUser";
 import getSelectOptions from "../../utilities/getSelectOptions";
+import {
+  userCreationFields,
+  userCreationDefaults,
+} from "../../utilities/userCreationConfig";
 
 export default function UserCreationForm() {
+  // initialize form handling via react-hook-form
   const {
     register,
     handleSubmit,
@@ -15,125 +19,59 @@ export default function UserCreationForm() {
     formState: { errors },
   } = useForm({
     shouldUseNativeValidation: false,
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      occupation: "",
-      state: "",
-    },
+    defaultValues: userCreationDefaults,
   });
 
+  /* options {
+    [asyncCollectionName: string]: string[] | obj[]
+    error?: string
+  }  */
+  const [options, setOptions] = useState(null);
+
+  // get options from async source (fetch rewards' endpoint)
+  // assumes external options will be static over the course of user session
+  useEffect(() => {
+    if (!options) {
+      async function getOptions() {
+        setOptions(await getSelectOptions());
+      }
+      getOptions();
+    }
+  }, []);
+
   return (
-    <form onSubmit={handleSubmit(handleSubmitUser)} noValidate>
-      <InputField
-        inputType={"text"}
-        name={"name"}
-        labelText={"Full Name"}
-        placeholder={"full name"}
-        validations={{
-          required: {
-            value: true,
-            message: "Please supply your full name.",
-          },
-          maxLength: {
-            value: 255,
-            message:
-              "Please provide a version of your full name that is less than 255 characters",
-          },
-        }}
-        register={register}
-        formErrors={errors}
-      />
-
-      <InputField
-        inputType={"email"}
-        name={"email"}
-        labelText={"Email Address"}
-        placeholder={"email@address.com"}
-        validations={{
-          required: {
-            value: true,
-            message: "Gotta have an email address.",
-          },
-          pattern: {
-            value: emailRegExp,
-            message: "This doesn't look like an email address.",
-          },
-        }}
-        register={register}
-        formErrors={errors}
-      />
-
-      <InputField
-        inputType={"password"}
-        name={"password"}
-        labelText={"Set a password"}
-        placeholder={""}
-        validations={{
-          required: {
-            value: true,
-            message: "Password required.",
-          },
-          minLength: {
-            value: 8,
-            message: "Sorry, passwords need 8+ characters.",
-          },
-          maxLength: {
-            value: 255,
-            message: "Cool it on the password length.",
-          },
-        }}
-        register={register}
-        formErrors={errors}
-      />
-
-      <InputField
-        inputType={"password"}
-        name={"password-confirm"}
-        labelText={"Re-enter your password"}
-        placeholder={""}
-        validations={{
-          required: {
-            value: true,
-            message: "Password confirmation required.",
-          },
-          validate: {
-            passwordsMatch: (value) =>
-              value == getValues("password") || "Passwords need to match.",
-          },
-          onBlur: async () => trigger("password-confirm"),
-        }}
-        register={register}
-        formErrors={errors}
-      />
-
-      <SelectFieldAsync
-        name={"occupation"}
-        labelText={
-          "Occupation (If there's time, do autocomplete instead of select)"
-        }
-        placeholder={""}
-        validations={{}}
-        register={register}
-        formErrors={errors}
-        asyncOptions={null}
-      />
-
-      <SelectFieldAsync
-        name={"state"}
-        labelText={"State (If there's time, do autocomplete instead of select)"}
-        placeholder={""}
-        validations={{}}
-        register={register}
-        formErrors={errors}
-        asyncOptions={null}
-      />
-
-      <button type={"submit"} onSubmit={getSelectOptions}>
-        Create User
-      </button>
-      {/* submission status div will be placed outside of form element */}
-    </form>
+    <>
+      {options?.error && (
+        <div>Error getting options: {options?.error?.message}</div>
+      )}
+      <form onSubmit={handleSubmit(handleSubmitUser)} noValidate>
+        {userCreationFields.map(
+          ({ asyncContent, asyncCollectionName, ...field }, i) => {
+            if (!asyncContent)
+              return (
+                <InputField
+                  key={`sync-field-${i}`}
+                  field={field}
+                  register={register}
+                  formErrors={errors}
+                />
+              );
+            if (asyncContent) {
+              return (
+                <SelectFieldAsync
+                  key={`async-field-${i}`}
+                  field={field}
+                  register={register}
+                  formErrors={errors}
+                  asyncOptions={options?.[asyncCollectionName] ?? null}
+                />
+              );
+            }
+          }
+        )}
+        <button type={"submit"}>Create User</button>
+        {/* submission status div will be placed outside of form element */}
+      </form>
+    </>
   );
 }
