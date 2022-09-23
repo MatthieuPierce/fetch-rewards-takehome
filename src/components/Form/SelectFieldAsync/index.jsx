@@ -1,8 +1,10 @@
 import OptionsList from "./OptionsList";
+import ValidationError from "../ValidationError";
 
 export default function SelectFieldAsync({
-  register,
   field: { name, labelText = null, inputType = "select", validations = {} },
+  register,
+  getValues,
   formErrors,
   asyncOptions = null,
   ...rest
@@ -28,9 +30,9 @@ export default function SelectFieldAsync({
           <OptionsList options={asyncOptions} selectName={name} />
         )}
       </select>
-      <div>
-        {formErrors[name] ? <span>{formErrors[name]?.message}</span> : null}
-      </div>
+      {formErrors[name] && (
+        <ValidationError message={formErrors[name]?.message} />
+      )}
     </div>
   );
 }

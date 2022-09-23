@@ -1,21 +1,29 @@
+import { useState } from "react";
+import ValidationError from "../ValidationError";
+import injectPasswordsMatch from "../../../utilities/injectPasswordsMatch";
+
 export default function InputField({
-  register,
   field: { name, labelText = null, inputType = "text", validations = {} },
+  register,
+  getValues = () => {},
   formErrors,
   ...rest
 }) {
+  const [injectedValidations, setInjectedValidations] = useState(() =>
+    injectPasswordsMatch(validations, getValues)
+  );
   return (
     <div>
       <label htmlFor={name}>{labelText ? labelText : name}</label>
       <input
-        {...register(name, validations)}
+        {...register(name, injectedValidations)}
         type={inputType}
         placeholder={rest?.placeholder ? rest.placeholder : name}
         {...rest}
       />
-      <div>
-        {formErrors[name] ? <span>{formErrors[name]?.message}</span> : null}
-      </div>
+      {formErrors[name] && (
+        <ValidationError message={formErrors[name]?.message} />
+      )}
     </div>
   );
 }

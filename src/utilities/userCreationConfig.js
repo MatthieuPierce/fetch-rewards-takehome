@@ -1,7 +1,6 @@
 import { emailRegExp } from "./regexps";
 
 // unified store for the user creation fields' requirements
-// I did this because I wanted the app to be able to more concise and flexible
 
 // validations field is for use with react-hook-form; see
 // https://react-hook-form.com/api/useform/register
@@ -82,7 +81,6 @@ export const userCreationFields = [
         passwordsMatch: (value) =>
           value == getValues("password") || "Passwords need to match.",
       },
-      onBlur: async () => trigger("password-confirm"), // forces RHF to validate when this field is blurred
     },
     order: 3,
   },

@@ -1,34 +1,38 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import "./Form.css";
 import InputField from "./InputField";
 import SelectFieldAsync from "./SelectFieldAsync";
 import handleSubmitUser from "../../utilities/handleSubmitUser";
+import postUser from "../../utilities/postUser";
 import getSelectOptions from "../../utilities/getSelectOptions";
 import {
   userCreationFields,
   userCreationDefaults,
 } from "../../utilities/userCreationConfig";
+import "./Form.css";
+import SubmitStatus from "../SubmitStatus";
 
 export default function UserCreationForm() {
-  // initialize form handling via react-hook-form
+  // Initialize form handling courtesy of react-hook-form
   const {
-    register,
     handleSubmit,
+    register,
     getValues,
     formState: { errors },
   } = useForm({
+    mode: "onBlur",
     shouldUseNativeValidation: false,
     defaultValues: userCreationDefaults,
   });
 
+  // Store options snagged from fetch asynchronously
   /* options {
     [asyncCollectionName: string]: string[] | obj[]
     error?: string
   }  */
   const [options, setOptions] = useState(null);
 
-  // get options from async source (fetch rewards' endpoint)
+  // Get options from async source (fetch rewards' endpoint)
   // assumes external options will be static over the course of user session
   useEffect(() => {
     if (!options) {
@@ -39,39 +43,53 @@ export default function UserCreationForm() {
     }
   }, []);
 
+  // Track status of user submission
+  // postStatus {[ "submitting" | "error" | "success" ]: message string }
+  const [postStatus, setPostStatus] = useState(null);
+
   return (
     <>
-      {options?.error && (
-        <div>Error getting options: {options?.error?.message}</div>
-      )}
-      <form onSubmit={handleSubmit(handleSubmitUser)} noValidate>
-        {userCreationFields.map(
-          ({ asyncContent, asyncCollectionName, ...field }, i) => {
-            if (!asyncContent)
-              return (
-                <InputField
-                  key={`sync-field-${i}`}
-                  field={field}
-                  register={register}
-                  formErrors={errors}
-                />
-              );
-            if (asyncContent) {
-              return (
-                <SelectFieldAsync
-                  key={`async-field-${i}`}
-                  field={field}
-                  register={register}
-                  formErrors={errors}
-                  asyncOptions={options?.[asyncCollectionName] ?? null}
-                />
-              );
+      {!postStatus?.success && (
+        <form
+          onSubmit={handleSubmit((data) =>
+            handleSubmitUser(data, userCreationFields, postUser, setPostStatus)
+          )}
+          noValidate
+        >
+          {userCreationFields.map(
+            ({ asyncContent, asyncCollectionName, ...field }, i) => {
+              if (!asyncContent)
+                return (
+                  <InputField
+                    key={`sync-field-${i}`}
+                    field={field}
+                    register={register}
+                    getValues={getValues}
+                    formErrors={errors}
+                  />
+                );
+              if (asyncContent) {
+                return (
+                  <SelectFieldAsync
+                    key={`async-field-${i}`}
+                    field={field}
+                    register={register}
+                    getValues={getValues}
+                    formErrors={errors}
+                    asyncOptions={options?.[asyncCollectionName] ?? null}
+                  />
+                );
+              }
             }
-          }
-        )}
-        <button type={"submit"}>Create User</button>
-        {/* submission status div will be placed outside of form element */}
-      </form>
+          )}
+          <button type={"submit"}>Create User</button>
+        </form>
+      )}
+
+      <SubmitStatus status={postStatus} />
+      {options?.error && (
+        <div>Error fetching options: {options?.error?.message}</div>
+      )}
     </>
   );
 }
