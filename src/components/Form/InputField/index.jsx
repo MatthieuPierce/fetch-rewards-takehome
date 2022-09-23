@@ -1,9 +1,16 @@
 import { useState } from "react";
 import ValidationError from "../ValidationError";
 import injectPasswordsMatch from "../../../utilities/injectPasswordsMatch";
+import "./InputField.css";
 
 export default function InputField({
-  field: { name, labelText = null, inputType = "text", validations = {} },
+  field: {
+    name,
+    labelText = null,
+    placeholder = null,
+    inputType = "text",
+    validations = {},
+  },
   register,
   getValues = () => {},
   formErrors,
@@ -13,12 +20,13 @@ export default function InputField({
     injectPasswordsMatch(validations, getValues)
   );
   return (
-    <div>
+    <div className={"fieldset"}>
       <label htmlFor={name}>{labelText ? labelText : name}</label>
       <input
         {...register(name, injectedValidations)}
         type={inputType}
-        placeholder={rest?.placeholder ? rest.placeholder : name}
+        placeholder={placeholder ? placeholder : name}
+        aria-invalid={formErrors[name] ? "true" : "false"}
         {...rest}
       />
       {formErrors[name] && (

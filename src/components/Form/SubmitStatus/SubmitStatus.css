@@ -1,0 +1,4 @@
+.statusBox {
+  width: clamp(300px, 600px, 100vw);
+  text-align: center;
+}

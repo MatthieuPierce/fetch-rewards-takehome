@@ -1,15 +1,14 @@
 import { useState } from "react";
+import Header from "./components/Header";
 import Form from "./components/Form";
-import SubmitStatus from "./components/SubmitStatus";
 import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Matthieu Pierce's Frontend Take-Home Exercise</h1>
+    <main className="App">
+      <Header />
       <Form />
-      <SubmitStatus />
-    </div>
+    </main>
   );
 }
 

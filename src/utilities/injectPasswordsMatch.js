@@ -1,4 +1,4 @@
-// pass a registered getValues function to the validations object
+// pass a registered getValues function to a validations object
 // so react-hook-form can compare the values of password & password-confirm
 
 export default function injectPasswordsMatch(validationsObj, getValuesFn) {

@@ -4,14 +4,14 @@ import InputField from "./InputField";
 import SelectFieldAsync from "./SelectFieldAsync";
 import handleSubmitUser from "../../utilities/handleSubmitUser";
 import postUser from "../../utilities/postUser";
-import getSelectOptions from "../../utilities/getSelectOptions";
+import fetchSelectOptions from "../../utilities/fetchSelectOptions";
 import {
   userCreationFields,
   userCreationDefaults,
 } from "../../utilities/userCreationConfig";
 import "./Form.css";
-import SubmitStatus from "../SubmitStatus";
-
+import SubmitStatus from "./SubmitStatus";
+import SubmitButton from "./SubmitButton";
 export default function UserCreationForm() {
   // Initialize form handling courtesy of react-hook-form
   const {
@@ -32,12 +32,12 @@ export default function UserCreationForm() {
   }  */
   const [options, setOptions] = useState(null);
 
-  // Get options from async source (fetch rewards' endpoint)
+  // Fetch options from async source (fetch rewards' endpoint)
   // assumes external options will be static over the course of user session
   useEffect(() => {
     if (!options) {
       async function getOptions() {
-        setOptions(await getSelectOptions());
+        setOptions(await fetchSelectOptions());
       }
       getOptions();
     }
@@ -82,7 +82,7 @@ export default function UserCreationForm() {
               }
             }
           )}
-          <button type={"submit"}>Create User</button>
+          <SubmitButton errors={errors} />
         </form>
       )}
 

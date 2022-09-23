@@ -1,4 +1,8 @@
-# Frontend Take-Home Exercise
+# Fetch Rewards Frontend Take-Home Exercise
+
+## [Link to Matthieu's Exercise](https://matthieupierce.github.io/fetch-rewards-takehome)
+
+## Instructions
 
 Your task is to build a webpage with a user creation form. The form should take the following required inputs:
 
@@ -7,6 +11,8 @@ Your task is to build a webpage with a user creation form. The form should take 
 - Password
 - Occupation
 - State
+
+> N.B. I've inserted an additional `Confirm Password` field as well, which is validated locally to match against the password value, and is then discarded prior to posting.
 
 Occupation and State should allow users to select from options returned by an endpoint. Users should only be able to select one occupation and one state. A GET request to `https://frontend-take-home.fetchrewards.com/form` will return a JSON body with the following format:
 
@@ -41,7 +47,7 @@ You should submit the results of the form to the same endpoint (`https://fronten
 
 The POST endpoint will return a 200 status code if all fields are provided. It does not perform any validation beyond this.
 
-(It provides a simple `500 Internal Server Error` status code if all fields are not present.)
+> N.B. The POST endpoint provides a simple `500 Internal Server Error` status code if all fields are not present.
 
 ## Minimum Requirements
 

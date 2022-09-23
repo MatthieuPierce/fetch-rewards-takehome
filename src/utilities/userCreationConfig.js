@@ -1,7 +1,6 @@
-import { emailRegExp } from "./regexps";
+import { emailRegExp, nameRegExp } from "./regexps";
 
-// unified store for the user creation fields' requirements
-
+// Unified store for the user creation form's fields' requirements
 // validations field is for use with react-hook-form; see
 // https://react-hook-form.com/api/useform/register
 
@@ -16,6 +15,10 @@ export const userCreationFields = [
       required: {
         value: true,
         message: "Please supply your full name.",
+      },
+      pattern: {
+        value: nameRegExp,
+        message: "Please start your name with a letter",
       },
       maxLength: {
         value: 255,
@@ -67,8 +70,8 @@ export const userCreationFields = [
   },
   {
     name: "password-confirm",
-    labelText: "Re-enter your password",
-    placeholder: "",
+    labelText: "Re-enter password",
+    placeholder: "password (again)",
     inputType: "password",
     asyncContent: false,
     excludeFromPost: true,
@@ -86,8 +89,7 @@ export const userCreationFields = [
   },
   {
     name: "occupation",
-    labelText:
-      "Occupation (if there's time, do autocomplete instead of select)",
+    labelText: "Occupation",
     placeholder: "",
     inputType: "select",
     asyncContent: true, // for this take-home, all the select fields are async
@@ -102,7 +104,7 @@ export const userCreationFields = [
   },
   {
     name: "state",
-    labelText: "State (If there's time, do autocomplete instead of select)",
+    labelText: "State",
     placeholder: "",
     inputType: "select",
     asyncContent: true, // for this take-home, all the select fields are async

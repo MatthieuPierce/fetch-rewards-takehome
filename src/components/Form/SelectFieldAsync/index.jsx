@@ -1,5 +1,6 @@
 import OptionsList from "./OptionsList";
 import ValidationError from "../ValidationError";
+import "./SelectFieldAsync.css";
 
 export default function SelectFieldAsync({
   field: { name, labelText = null, inputType = "select", validations = {} },
@@ -10,12 +11,13 @@ export default function SelectFieldAsync({
   ...rest
 }) {
   return (
-    <div>
+    <div className="fieldset">
       <label htmlFor={name}>{labelText ? labelText : name}</label>
       <select
         {...register(name, validations)}
         type={inputType}
         placeholder={rest?.placeholder ? rest.placeholder : name}
+        aria-invalid={formErrors[name] ? "true" : "false"}
         {...rest}
       >
         <option value={""}>

@@ -1,6 +1,7 @@
 import axios from "axios";
 
-export default async function getSelectOptions() {
+// fetch field options from fetch rewards
+export default async function fetchSelectOptions() {
   const endpoint = import.meta.env.VITE_FETCH_ENDPOINT;
   const options = {
     withCredentials: false,

@@ -1,8 +1,21 @@
 form {
   display: grid;
-  box-sizing: border-box;
   grid-template-columns: 1fr;
+  box-sizing: border-box;
   gap: 1rem;
   align-items: baseline;
   width: clamp(300px, 600px, 100vw);
+}
+
+.fieldset {
+  display: flex;
+  box-sizing: border-box;
+  flex-flow: column;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  font-size: 1.2rem;
+  background-color: transparent;
+  min-width: 1rem;
+  width: 100%;
+  max-width: 100%;
 }
