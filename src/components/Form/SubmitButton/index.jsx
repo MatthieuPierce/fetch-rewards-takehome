@@ -5,7 +5,6 @@ SubmitButton.propTypes = {
   errors: PropTypes.object,
 };
 export default function SubmitButton({ errors }) {
-  console.log(errors);
   return (
     <button
       className={Object.keys(errors).length > 0 ? "hold" : null}
