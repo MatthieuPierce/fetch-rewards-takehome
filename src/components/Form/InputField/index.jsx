@@ -21,7 +21,7 @@ export default function InputField({
   formErrors,
   ...rest
 }) {
-  const [injectedValidations, setInjectedValidations] = useState(() =>
+  const [injectedValidations] = useState(() =>
     injectPasswordsMatch(validations, getValues)
   );
   return (

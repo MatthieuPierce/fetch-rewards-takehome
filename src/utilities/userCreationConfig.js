@@ -82,6 +82,8 @@ export const userCreationFields = [
       },
       validate: {
         passwordsMatch: (value) =>
+          // ignoring undefined getValues; will use injectPasswordsMatch fn to provide this function
+          // eslint-disable-next-line no-undef
           value == getValues("password") || "Passwords need to match.",
       },
     },
@@ -121,12 +123,9 @@ export const userCreationFields = [
 
 // return each field's registered name as a key with an empty string value
 // to supply to react-hook-form's defaultValues option
-export const userCreationDefaults = userCreationFields.reduce(
-  (acc, curr, i) => {
-    acc[curr?.name] = "";
-    return acc;
-  },
-  {}
-);
+export const userCreationDefaults = userCreationFields.reduce((acc, curr) => {
+  acc[curr?.name] = "";
+  return acc;
+}, {});
 
 export default userCreationFields;
