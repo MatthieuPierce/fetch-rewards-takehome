@@ -36,9 +36,9 @@ export default function UserCreationForm() {
   // assumes external options will be static over the course of user session
   useEffect(() => {
     if (!options) {
-      async function getOptions() {
+      const getOptions = async () => {
         setOptions(await fetchSelectOptions());
-      }
+      };
       getOptions();
     }
   }, []);
