@@ -1,4 +1,13 @@
+import PropTypes from "prop-types";
 import "./SubmitStatus.css";
+
+SubmitStatus.propTypes = {
+  status: PropTypes.shape({
+    submitting: PropTypes.string,
+    error: PropTypes.string,
+    success: PropTypes.string,
+  }),
+};
 
 export default function SubmitStatus({ status }) {
   return (

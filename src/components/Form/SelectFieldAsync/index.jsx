@@ -1,11 +1,19 @@
 import OptionsList from "./OptionsList";
 import ValidationError from "../ValidationError";
+import fieldPropTypes from "../propTypes/fieldPropTypes";
+import optionsPropTypes from "../propTypes/optionsPropTypes";
 import "./SelectFieldAsync.css";
+
+// propTypes are largely shared b/t SelectFieldAsync & InputField
+// with the exception of asyncOptions
+SelectFieldAsync.propTypes = {
+  ...fieldPropTypes,
+  asyncOptions: optionsPropTypes,
+};
 
 export default function SelectFieldAsync({
   field: { name, labelText = null, inputType = "select", validations = {} },
   register,
-  getValues,
   formErrors,
   asyncOptions = null,
   ...rest

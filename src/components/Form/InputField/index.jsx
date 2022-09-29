@@ -1,12 +1,17 @@
 import { useState } from "react";
 import ValidationError from "../ValidationError";
 import injectPasswordsMatch from "../../../utilities/injectPasswordsMatch";
+import fieldPropTypes from "../propTypes/fieldPropTypes";
 import "./InputField.css";
+
+InputField.propTypes = {
+  ...fieldPropTypes,
+};
 
 export default function InputField({
   field: {
     name,
-    labelText = null,
+    labelText,
     placeholder = null,
     inputType = "text",
     validations = {},

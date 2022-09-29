@@ -1,6 +1,10 @@
+import PropTypes from "prop-types";
 import "./SubmitButton.css";
 
-export default function SubmitButton({ errors, ...rest }) {
+SubmitButton.propTypes = {
+  errors: PropTypes.object,
+};
+export default function SubmitButton({ errors }) {
   console.log(errors);
   return (
     <button
