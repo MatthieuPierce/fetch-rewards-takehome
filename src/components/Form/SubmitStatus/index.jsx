@@ -10,25 +10,21 @@ SubmitStatus.propTypes = {
 };
 
 export default function SubmitStatus({ status }) {
+  // role is "status" if submitting or successful, else there's an error and role is "alert"
+  const role = status?.submitting || status?.success ? "status" : "alert";
+
+  // status message falls from s.submitting to s.success to s.error
+  const message = status?.submitting
+    ? status.submitting
+    : status?.success
+    ? status.success
+    : status?.error
+    ? status.error
+    : null;
+
   return (
     <div className={"statusBox"}>
-      {status?.submitting && (
-        <div>
-          <span role="status">{status.submitting}</span>
-        </div>
-      )}
-      {status?.error && (
-        <div>
-          <span role="alert">
-            Error while attempting to create user: {status?.error}
-          </span>
-        </div>
-      )}
-      {status?.success && (
-        <div>
-          <span role="status">{status?.success}</span>
-        </div>
-      )}
+      <div role={role}>{message}</div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import fieldPropTypes from "../propTypes/fieldPropTypes";
 import optionsPropTypes from "../propTypes/optionsPropTypes";
 import "./SelectFieldAsync.css";
 
-// propTypes are largely shared b/t SelectFieldAsync & InputField
+// propTypes are common b/t SelectFieldAsync & InputField
 // with the exception of asyncOptions
 SelectFieldAsync.propTypes = {
   ...fieldPropTypes,
@@ -33,11 +33,10 @@ export default function SelectFieldAsync({
             ? rest.placeholder
             : `--Please choose your ${name}--`}
         </option>
-        {!asyncOptions && (
-          <OptionsList options={["A", "B", "C"]} selectName={name} />
-        )}
-        {asyncOptions && (
+        {asyncOptions ? (
           <OptionsList options={asyncOptions} selectName={name} />
+        ) : (
+          <OptionsList options={["A", "B", "C"]} selectName={name} />
         )}
       </select>
       {formErrors[name] && (
