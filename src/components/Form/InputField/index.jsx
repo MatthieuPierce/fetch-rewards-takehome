@@ -19,7 +19,6 @@ export default function InputField({
   register,
   getValues = () => {},
   formErrors,
-  ...rest
 }) {
   const [injectedValidations] = useState(() =>
     injectPasswordsMatch(validations, getValues)
@@ -32,7 +31,6 @@ export default function InputField({
         type={inputType}
         placeholder={placeholder ? placeholder : name}
         aria-invalid={formErrors[name] ? "true" : "false"}
-        {...rest}
       />
       {formErrors[name] && (
         <ValidationError message={formErrors[name]?.message} />

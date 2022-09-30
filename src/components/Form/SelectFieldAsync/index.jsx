@@ -12,11 +12,16 @@ SelectFieldAsync.propTypes = {
 };
 
 export default function SelectFieldAsync({
-  field: { name, labelText = null, inputType = "select", validations = {} },
+  field: {
+    name,
+    labelText = null,
+    inputType = "select",
+    placeholder,
+    validations = {},
+  },
   register,
   formErrors,
   asyncOptions = null,
-  ...rest
 }) {
   return (
     <div className="fieldset">
@@ -24,14 +29,11 @@ export default function SelectFieldAsync({
       <select
         {...register(name, validations)}
         type={inputType}
-        placeholder={rest?.placeholder ? rest.placeholder : name}
+        placeholder={placeholder ? placeholder : name}
         aria-invalid={formErrors[name] ? "true" : "false"}
-        {...rest}
       >
         <option value={""}>
-          {rest?.placeholder
-            ? rest.placeholder
-            : `--Please choose your ${name}--`}
+          {placeholder ? placeholder : `--Please choose your ${name}--`}
         </option>
         {asyncOptions ? (
           <OptionsList options={asyncOptions} selectName={name} />
