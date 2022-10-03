@@ -71,9 +71,9 @@ Will output build files to `dist/`
 
 1. If you haven't already, create a `fetch-rewards-takehome` repo on GitHub.
 
-- If you use a repo name other than `fetch-rewards-takehome`, change the `base` value in `vite.config.js` to match.
+   - If you use a repo name other than `fetch-rewards-takehome`, change the `base` value in `vite.config.js` to match.
 
-2. Whenever you push your `main` branch to GitHub, GitHub Actions will deploy to `https://<user-name>.github.io/fetch-rewards-takehome` ( or `https://<user-name>.github.io/<your-alternate-repo-name>`)
+2. Whenever you push your `main` branch to GitHub, GitHub Actions will deploy its production build to `https://<user-name>.github.io/<fetch-rewards-takehome | your-repo-name>`
 
 ## Fetch Rewards Instructions (with notes by Matthieu)
 
